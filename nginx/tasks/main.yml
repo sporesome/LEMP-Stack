@@ -1,4 +1,9 @@
 # NGINX
+  - name: "Add epel-release repo" # Добавляем репозиторий
+    yum:
+      name: epel-release
+      state: present
+
   - name: "Install nginx via yum"
     ansible.builtin.yum: 
       name: "nginx" # имя пакета для установки
@@ -17,3 +22,5 @@
       owner: "nginx" # пользователь владелец файла/директории на удаленной машине
       group: "nginx" # группа владелец файла/директории на удаленной машине
       mode: "0644" # права доступа к файлу/директории
+
+  
