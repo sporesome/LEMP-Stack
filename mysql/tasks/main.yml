@@ -1,7 +1,14 @@
  # MYSQL
-  - name: "Install mysql via yum"
+  - name: "Installing Repo"
+    shell: sudo rpm -Uvh http://dev.mysql.com/get/mysql57-community-release-el6-7.noarch.rpm
+    ignore_errors: yes  
+  
+
+
+
+  - name: "Install MySQL 5.7 via yum"
     ansible.builtin.yum:
-      name: "mysql-server"
+      name: "mysql-community-server"
       state: "latest"
       update_cache: true
 
