@@ -2,8 +2,8 @@
 # LEMP PLAYBOOK #
 #################
 ---
-- hosts: "all" # применяем команды ко всем хостам из inventory
-  become: true # становимся привилегированным пользователем
+- hosts: "all" 
+  become: true 
   roles:   
   - mysql
   - nginx
