@@ -1,26 +1,45 @@
-# NGINX
-  - name: "Add epel-release repo" # Добавляем репозиторий
-    yum:
-      name: epel-release
-      state: present
+---
 
-  - name: "Install nginx via yum"
-    ansible.builtin.yum: 
-      name: "nginx" # имя пакета для установки
-      state: "latest" # установить последнюю версию пакета, в отличие от present, если пакет уже установлен в системе, попробует его обновить
-      update_cache: true # вызвать yum update перед установкой, чтобы убедиться в наличии самой свежей базы данных о пакетах
+- name: Install Nginx
+  yum:
+    name: rh-nginx112
+    state: installed
 
-  - name: "Delete /usr/share/nginx/html folder"
-    ansible.builtin.file: # этот модуль работает с файлами и папками на удаленной машине
-      path: "/usr/share/nginx/html" # путь к файлу/папке на удаленной машине
-      state: "absent" # перевести папку в состояние absent - то есть удалить ее
 
-  - name: "Copy our landing to /usr/share/nginx/html folder"
-    ansible.builtin.copy: # этот модуль копирует файлы/директории с контрольной ноды на хосты
-      src: "files/html" # путь к файлу/директории для копирования на контрольной ноде
-      dest: "/usr/share/nginx/" # путь для вставки на удаленной машине
-      owner: "nginx" # пользователь владелец файла/директории на удаленной машине
-      group: "nginx" # группа владелец файла/директории на удаленной машине
-      mode: "0644" # права доступа к файлу/директории
+- name: "Delete /opt/rh/rh-nginx112/root/usr/share/nginx/html folder"
+  ansible.builtin.file: # этот модуль работает с файлами и папками на удаленной машине
+    path: "/opt/rh/rh-nginx112/root/usr/share/nginx/html/" # путь к файлу/папке на удаленной машине
+    state: "absent" # перевести папку в состояние absent - то есть удалить ее
 
-  
+- name: "Copy our landing to /opt/rh/rh-nginx112/root/usr/share/nginx/html folder"
+  ansible.builtin.copy: # этот модуль копирует файлы/директории с контрольной ноды на хосты
+     src: "files/html" # путь к файлу/директории для копирования на контрольной ноде
+     dest: "/opt/rh/rh-nginx112/root/usr/share/nginx/" # путь для вставки на удаленной машинели переименовывать их
+     owner: "root" # пользователь владелец файла/директории на удаленной машине
+     group: "root" # группа владелец файла/директории на удаленной машине
+     mode: "0644" # права доступа к файлу/директории    
+
+- name: Enable and Start Nginx
+  systemd:
+    name: rh-nginx112-nginx
+    enabled: yes
+    state: started
+
+
+
+- name: "Copy nginx configuration"
+  ansible.builtin.copy:
+    src: "files/nginx.conf" 
+    dest: "/etc/opt/rh/rh-nginx112/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: "Copy test php-page"
+  ansible.builtin.copy:
+    src: "files/info.php" 
+    dest: "/opt/rh/rh-nginx112/root/usr/share/nginx/html/info.php"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+ 

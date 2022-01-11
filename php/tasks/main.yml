@@ -5,27 +5,28 @@
       state: "latest"
       update_cache: true
     with_items: # а вот тут уже и перечисляем, ansible сам их подcтавит вместо {{ name }}
-      - "php-fpm"
-      - "php-mysql"
+      - "rh-php71-php-fpm"
+      - "rh-php71-php-mysqlnd"
 
-  - name: "Copy php files to /usr/share/nginx/"
+       
+
+  - name: "Copy php files"
     ansible.builtin.copy:
-      src: "files/test-php/php_test"
-      dest: "/usr/share/nginx/"
+      src: "files/test-php/www.conf" 
+      dest: "/etc/opt/rh/rh-php71/php-fpm.d/www.conf"
       owner: "root"
       group: "root"
       mode: "0644"
+   
 
-  - name: "Copy nginx config for php testing"
-    ansible.builtin.copy:
-      src: "files/test-php/nginx.conf"
-      dest: "/etc/nginx/sites-available/php_test.conf"
-      owner: "root"
-      group: "root"
-      mode: "0644"
+  - name: Enable and Start php-fpm
+    systemd:
+      name: rh-php71-php-fpm
+      enabled: yes
+      state: started
 
-  - name: "Link folder"
-    ansible.builtin.file:
-      src: "/etc/nginx/sites-available/php_test.conf"
-      dest: "/etc/nginx/sites-enabled/php_test"
-      state: "link" # здесь создаем симлинк
+
+
+
+
+
