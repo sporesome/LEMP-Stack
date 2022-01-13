@@ -1,7 +1,9 @@
 # LEMP-Stack
 
 Simple ansible playbook that install LEMP stack on centos7 (Nginx+PHP7+MariaDB)
-It currently contains only sample bootstrap template and php-info page. MariaDB is working, but not using in this version
+This is a very primitive version, made during training.
+It currently contains only sample bootstrap template and php-info page. MariaDB is working, but not using in this version.
+
 
 ## Installation
 
