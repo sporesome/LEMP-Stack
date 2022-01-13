@@ -7,17 +7,17 @@
 
 
 - name: "Delete /opt/rh/rh-nginx112/root/usr/share/nginx/html folder"
-  ansible.builtin.file: # этот модуль работает с файлами и папками на удаленной машине
-    path: "/opt/rh/rh-nginx112/root/usr/share/nginx/html/" # путь к файлу/папке на удаленной машине
-    state: "absent" # перевести папку в состояние absent - то есть удалить ее
+  ansible.builtin.file:
+    path: "/opt/rh/rh-nginx112/root/usr/share/nginx/html/" 
+    state: "absent" 
 
 - name: "Copy our landing to /opt/rh/rh-nginx112/root/usr/share/nginx/html folder"
-  ansible.builtin.copy: # этот модуль копирует файлы/директории с контрольной ноды на хосты
-     src: "files/html" # путь к файлу/директории для копирования на контрольной ноде
-     dest: "/opt/rh/rh-nginx112/root/usr/share/nginx/" # путь для вставки на удаленной машинели переименовывать их
-     owner: "root" # пользователь владелец файла/директории на удаленной машине
-     group: "root" # группа владелец файла/директории на удаленной машине
-     mode: "0644" # права доступа к файлу/директории    
+  ansible.builtin.copy: 
+     src: "files/html" 
+     dest: "/opt/rh/rh-nginx112/root/usr/share/nginx/" 
+     owner: "root" 
+     group: "root" 
+     mode: "0644" 
 
 - name: Enable and Start Nginx
   systemd:
